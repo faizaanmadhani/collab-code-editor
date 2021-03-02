@@ -47,9 +47,6 @@ class ShelfState extends State<Shelf> {
   void _pushAddBookScreen() {
     // Push the book add page onto the stack
 
-    String title;
-    String author;
-
     Navigator.of(context).push(
       new MaterialPageRoute(
         builder: (context) {
@@ -62,16 +59,14 @@ class ShelfState extends State<Shelf> {
               new TextField(
               autofocus: true,
               onSubmitted: (val) {
+                this._addBook(val, "HardCoded Author");
                 Navigator.pop(context);
               },
               decoration: new InputDecoration(
                   hintText: 'Book Title',
                   contentPadding: const EdgeInsets.all(16.0)
               ),
-            ),
-                new TextField(
-
-                )
+            )
               ]
             )
           );
