@@ -22,6 +22,7 @@ environment:
 
 dependencies:
   autocomplete_textfield: ^1.7.3
+  http: any
   flutter:
     sdk: flutter
 

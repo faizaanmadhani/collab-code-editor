@@ -59,8 +59,7 @@ class ShelfState extends State<Shelf> {
               new TextField(
               autofocus: true,
               onSubmitted: (val) {
-                this._addBook(val, "HardCoded Author");
-                Navigator.pop(context);
+
               },
               decoration: new InputDecoration(
                   hintText: 'Book Title',
