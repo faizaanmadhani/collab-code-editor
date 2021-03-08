@@ -1,20 +1,20 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class BooksLoadModel {
 
-  static Future<http.Response> fetchBooks(String name) async {
-    String nameParsed = name.replaceAll(" ", "+");
-    final response = await http.get(Uri.https('http://openlibrary.org', '/search.json?title=$nameParsed'));
-    if (response.statusCode == 200) {
-      try {
-      } catch (e) {
-        print(e);
-      }
-    }
-  }
-
+Future<http.Response> fetchBooks(String name) async {
+  String nameParsed = name.replaceAll(" ", "+");
+  return http.get(
+      Uri.https('http://openlibrary.org', '/search.json?title=$nameParsed')
+  );
 }
+
+List <BookObjects> parseBooks(String responseBody) {
+  final parsed == jsonDecode(responseBody).cast
+}
+
+
+
 
 class BookObjects {
   String title;
