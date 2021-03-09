@@ -5,13 +5,13 @@ String placeHolderImgUrl = 'https://s31531.pcdn.co/wp-content/uploads/2019/01/37
 class Book extends StatelessWidget {
 
   String _bookTitle;
-  String _author;
+  List<String> _authors;
   String _coverImageUrl;
   String _buyLink;
 
-  Book(String title, String author) {
+  Book(String title, List<String> authors) {
     this._bookTitle = title;
-    this._author = author;
+    this._authors = authors;
     this._coverImageUrl = placeHolderImgUrl;
   }
 
@@ -25,14 +25,14 @@ class Book extends StatelessWidget {
             leading: Icon(Icons.arrow_drop_down_circle),
             title: new Text(this._bookTitle),
             subtitle: Text(
-              this._author,
+              this._authors[0], //Current Hardcoded for only one author to be displayed. Refactor for dynamic displaying
               style: TextStyle(color: Colors.black.withOpacity(0.6)),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Lorem Ipsum Dorem Placeholder text',
+              'Placeholder description text', // Pass through blurbs
               style: TextStyle(color: Colors.black.withOpacity(0.6)),
             ),
           ),

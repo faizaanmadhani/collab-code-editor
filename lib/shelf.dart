@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'book.dart';
 import 'fetchtitles.dart';
+import 'package:http/http.dart' as http;
 
 // Generalized widget for rendering all the required books
 
@@ -13,7 +14,7 @@ class ShelfState extends State<Shelf> {
 
   List<Book> _books = [];
 
-  void _addBook(String bookName, String bookAuthor) {
+  void _addBook(String bookName, List<String> bookAuthor) {
     //SetState() will rerender the Shelf
     setState(() {
       int index = _books.length;
@@ -22,7 +23,10 @@ class ShelfState extends State<Shelf> {
   }
 
   Widget _buildShelf() {
-    return new ListView.builder(
+    return new GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+      ),
       // ignore: missing_return
       itemBuilder: (context, index) {
 
@@ -39,11 +43,36 @@ class ShelfState extends State<Shelf> {
       body: _buildShelf(),
       floatingActionButton: new FloatingActionButton(
           onPressed: _pushAddBookScreen,
-        tooltip: 'Add task',
+        tooltip: 'Add Book',
         child: new Icon(Icons.add)
       ),
     );
   }
+
+  void _renderResultsScreen(val) {
+    // Push book search results page onto the stack
+    Navigator.of(context).push(
+      new MaterialPageRoute(
+        builder: (context) {
+          return new Scaffold(
+            appBar: new AppBar(
+              title: new Text('Results')
+            ),
+                body: FutureBuilder<List<BookObjects>>(
+                future: fetchBooks(val, http.Client()),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) print(snapshot.error);
+
+                    return snapshot.hasData
+                        ? BooksList(books: snapshot.data)
+                        : Center(child: CircularProgressIndicator());
+                  },
+              )
+            );
+          }
+        )
+      );
+    }
 
   void _pushAddBookScreen() {
     // Push the book add page onto the stack
@@ -60,7 +89,7 @@ class ShelfState extends State<Shelf> {
               new TextField(
               autofocus: true,
               onSubmitted: (val) {
-                fetchBooks(val);
+                _renderResultsScreen(val);
               },
               decoration: new InputDecoration(
                   hintText: 'Book Title',
@@ -74,5 +103,23 @@ class ShelfState extends State<Shelf> {
       )
     );
   }
+}
 
+class BooksList extends StatelessWidget {
+  final List<BookObjects> books;
+
+  BooksList({Key key, this.books}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      // ignore: missing_return
+      itemBuilder: (context, index) {
+        if (index < books.length) {
+          final bookWidget = new Book(books[index].title, books[index].authors);
+          return bookWidget;
+        }
+      }
+    );
+  }
 }
