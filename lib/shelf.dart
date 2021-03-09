@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'book.dart';
+import 'fetchtitles.dart';
 
 // Generalized widget for rendering all the required books
 
@@ -59,7 +60,7 @@ class ShelfState extends State<Shelf> {
               new TextField(
               autofocus: true,
               onSubmitted: (val) {
-
+                fetchBooks(val);
               },
               decoration: new InputDecoration(
                   hintText: 'Book Title',

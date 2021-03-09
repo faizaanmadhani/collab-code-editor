@@ -1,20 +1,22 @@
+import 'dart:async';
 import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 
-Future<http.Response> fetchBooks(String name) async {
+Future<List<BookObjects>> fetchBooks(String name, http.Client client) async {
   String nameParsed = name.replaceAll(" ", "+");
-  return http.get(
-      Uri.https('http://openlibrary.org', '/search.json?title=$nameParsed')
-  );
+  final response = await client.get('http://openlibrary.org/search.json?title=$nameParsed');
+  return compute(parseBooks, response.body);
 }
 
 List <BookObjects> parseBooks(String responseBody) {
-  final parsed == jsonDecode(responseBody).cast
+  final parsed = jsonDecode(responseBody)["docs"].cast<Map<String,dynamic>>();
+
+  return parsed.map<BookObjects>((json) => BookObjects.fromJson(json)).toList();
+
 }
-
-
-
 
 class BookObjects {
   String title;
