@@ -29,6 +29,9 @@ class ShelfState extends State<Shelf> {
       ),
       // ignore: missing_return
       itemBuilder: (context, index) {
+        if (_books == null) {
+          print("No Books Right now");
+        }
 
         if (index < _books.length) {
           return _books[index];
@@ -51,6 +54,7 @@ class ShelfState extends State<Shelf> {
 
   void _renderResultsScreen(String val) {
     // Push book search results page onto the stack
+    print("Reached 57: ${val}");
     Navigator.of(context).push(
       new MaterialPageRoute(
         builder: (context) {
@@ -61,11 +65,24 @@ class ShelfState extends State<Shelf> {
                 body: FutureBuilder<List<Book>>(
                 future: fetchBooks(val),
                   builder: (context, snapshot) {
-                    if (snapshot.hasError) print(snapshot.error);
-
-                    return snapshot.hasData
-                        ? BooksList(books: snapshot.data)
-                        : Center(child: CircularProgressIndicator());
+                    print("Ths is the snapshot:");
+                    print(snapshot);
+                    if (snapshot.connectionState == ConnectionState.none &&
+                        snapshot.hasData == null) {
+                      //print('project snapshot data is: ${projectSnap.data}');
+                      return Container();
+                    }
+                    return ListView.builder(
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        Book book = snapshot.data[index];
+                        return Column(
+                          children: <Widget>[
+                            // Widget to display the list of project
+                          ],
+                        );
+                      },
+                    );
                   },
               )
             );
@@ -76,7 +93,7 @@ class ShelfState extends State<Shelf> {
 
   void _pushAddBookScreen() {
     // Push the book add page onto the stack
-
+    print("REACHED 95");
     Navigator.of(context).push(
       new MaterialPageRoute(
         builder: (context) {
@@ -105,21 +122,21 @@ class ShelfState extends State<Shelf> {
   }
 }
 
-class BooksList extends StatelessWidget {
-  final List<Book> books;
-
-  BooksList({Key key, this.books}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      // ignore: missing_return
-      itemBuilder: (context, index) {
-        if (index < books.length) {
-          final bookWidget = new Book("Lorem Ipsum", ["Author1", "Author2"], "Sample", "Test");
-          return bookWidget;
-        }
-      }
-    );
-  }
-}
+//class BooksList extends StatelessWidget {
+//  final List<Book> books;
+//
+//  BooksList({Key key, this.books}) : super(key: key);
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return ListView.builder(
+//      // ignore: missing_return
+//      itemBuilder: (context, index) {
+//        if (index < books.length) {
+//          final bookWidget =
+//          return bookWidget;
+//        }
+//      }
+//    );
+//  }
+//}

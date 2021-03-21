@@ -5,22 +5,21 @@ String placeHolderImgUrl = 'https://s31531.pcdn.co/wp-content/uploads/2019/01/37
 class Book extends StatelessWidget {
 
   String _title;
-  List<String> _authors;
+  List<dynamic> _authors;
   String _coverImageUrl;
   String publisher;
 
-  Book(String title, List<String> authors, String imageUrl, String publisher) {
+  Book({String title, List<dynamic> authors, String imageUrl}) {
     this._title = title;
     this._authors = authors;
     this._coverImageUrl = imageUrl;
   }
 
-  factory Book.fromJson(Map<String, dynamic> parsedJson) {
+  factory Book.fromJson(Map<String, dynamic> json) {
     return Book(
-        parsedJson['keyword'] as String,
-        parsedJson['authors'] as List<String>,
-        parsedJson['country'] as String,
-        parsedJson['imageUrl'] as String
+        title: json['title'] as String,
+        authors: json['authors'] as List<dynamic>,
+        imageUrl: json['imageUrl'] as String
     );
   }
 
