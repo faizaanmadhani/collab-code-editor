@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import SocketContext from "../context/SocketContext";
 import { useEffect, useState } from "react";
 import { Controlled as CodeMirror } from "react-codemirror2";
 // Import theme data
@@ -5,16 +7,13 @@ import "codemirror/lib/codemirror.css";
 import "codemirror/theme/monokai.css";
 import "codemirror/mode/python/python.js";
 
-const io = require("socket.io-client");
-const socket = io.connect("localhost:3500");
-
 const Editor = (props) => {
   //Declare state
   const [code, setCode] = useState("");
   const [mode, setMode] = useState("python");
   const [theme, setTheme] = useState("monokai");
   const [users, setUsers] = useState([]);
-  const [currTyping, setCurrTyping] = useState(null);
+  const socket = useContext(SocketContext);
 
   socket.on("receive-code", (payload) => {
     updateCodeFromSocket(payload);

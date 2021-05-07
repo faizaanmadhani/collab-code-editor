@@ -1,10 +1,15 @@
 import { React, Component } from "react";
-import Editor from "./components/Editor";
+import HomePage from "./pages/HomePage";
 import { Container } from "@material-ui/core";
+import { SocketProvider, socket } from "./context/SocketContext";
 
 class App extends Component {
   render() {
-    return <Editor />;
+    return (
+      <SocketProvider value={socket}>
+        <HomePage />
+      </SocketProvider>
+    );
   }
 }
 
