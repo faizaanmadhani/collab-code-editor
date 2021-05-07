@@ -1,9 +1,10 @@
 # Collaborative Code Editor
 
 ### Completed Features:
-- Basic shared Code Editing (currently using Python)
+- Basic shared Code Editing (currently syntax-highlighting using Python)
 
 ### In progress:
-- Peer to Peer Chat
+- Peer to Peer Text-Based Chat
+- Rooms
 - Voice Chat
 
